@@ -20,13 +20,19 @@ exports.createUser= async (req, res) => {
     }
 };
 
-exports.getOneUser = (req, res) => {
+exports.getOneUser = async (req, res) => {
     try {
-        const user = {
-            user: req.params.username
-        }
-        res.status(200).send(user);
+        const user = [
+            req.params.username,
+        ];
+        const text = "SELECT * FROM movieusers"
+        let userList = await sql.query(text, {
+            type: QueryTypes.SELECT,
+        }) 
+        console.log(userList);
+        res.status(200).send({ username: user, message: "User found"});
     } catch (error) {
         res.status(400).send({ message: "User not found" })
     }
 }
+
